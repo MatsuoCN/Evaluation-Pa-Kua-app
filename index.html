@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avaliação Pa-Kua - Completo</title>
+    <link rel="stylesheet" href="style.css">
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h2>Cadastro de Avaliação - Pa-Kua</h2>
+
+        <form id="formCadastro">
+            <div class="form-group">
+                <label for="nome">Nome:</label>
+                <input type="text" id="nome" required>
+            </div>
+            <div class="form-group">
+                <label for="sobrenome">Sobrenome:</label>
+                <input type="text" id="sobrenome" required>
+            </div>
+            <div class="form-group">
+                <label for="idade">Idade:</label>
+                <input type="number" id="idade" min="0" required>
+            </div>
+            <div class="form-group">
+                <label for="orientador">Orientador(a):</label>
+                <input type="text" id="orientador" required>
+            </div>
+            <div class="form-group">
+                <label for="recinto">Recinto (Escola/Local):</label>
+                <input type="text" id="recinto" placeholder="Ex: Central, Juvevê, etc." required>
+            </div>
+            <div class="form-group">
+                <label for="graduacaoAtual">Graduação/Faixa Atual:</label>
+                <input type="text" id="graduacaoAtual" placeholder="Ex: Branca" required>
+            </div>
+            <div class="form-group">
+                <label for="tempoFaixa">Tempo com a Faixa Atual:</label>
+                <input type="text" id="tempoFaixa" placeholder="Ex: 6 meses, 1 ano" required>
+            </div>
+            <div class="form-group">
+                <label for="faixaNova">Avaliando para a Faixa/Nível:</label>
+                <input type="text" id="faixaNova" placeholder="Ex: Amarela" required>
+            </div>
+
+            <div class="form-group">
+                <label>Tipo de Avaliação:</label>
+                <div class="checkbox-group">
+                    <label class="checkbox-inline">
+                        <input type="checkbox" id="avalFaixa" checked> Faixa
+                    </label>
+                    <label class="checkbox-inline">
+                        <input type="checkbox" id="avalDistintivo"> Distintivo
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="checkbox-group" style="margin-top: 15px;">
+                    <label class="checkbox-inline" style="font-weight: bold;">
+                        <input type="checkbox" id="pagou"> Pagou a avaliação?
+                    </label>
+                </div>
+            </div>
+
+            <button type="submit">Cadastrar Aluno</button>
+        </form>
+    </div>
+
+    <div class="cards-grid" id="listaCards">
+    </div>
+
+    <script src="EvalPKapp.js"></script>
+
+</body>
+
+</html>
