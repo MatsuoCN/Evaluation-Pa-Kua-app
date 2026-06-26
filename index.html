@@ -4,8 +4,161 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Avaliação Pa-Kua - Completo</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Avaliação Pa-Kua - Cadastro</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            padding: 20px;
+            color: #333;
+            margin-bottom: 80px;
+            /* Espaço para o botão não cobrir conteúdo */
+        }
+
+        .container {
+            max-width: 650px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            background-color: #fff;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+        }
+
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+            background-color: #fff;
+            font-family: Arial, sans-serif;
+            font-size: 15px;
+            font-weight: bold;
+            color: #333;
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .form-group select:hover {
+            border-color: #888;
+            background-color: #fafafa;
+        }
+
+        .form-group select:focus {
+            outline: none;
+            border-color: #e67e22;
+            box-shadow: 0 0 8px rgba(230, 126, 34, 0.3);
+        }
+
+        .checkbox-group {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            margin-top: 5px;
+        }
+
+        .checkbox-inline {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: normal;
+            cursor: pointer;
+        }
+
+        .checkbox-inline input {
+            cursor: pointer;
+            width: 16px;
+            height: 16px;
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            padding: 12px;
+            background-color: #e67e22;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #d35400;
+        }
+
+        #mensagemSucesso {
+            display: none;
+            background-color: #2ecc71;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            border-radius: 4px;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        /* Estilo do Botão Flutuante (Fixo no canto inferior direito) */
+        .btn-flutuante {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: #2c3e50;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 50px;
+            /* Deixa o botão arredondado */
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            /* Sombra para dar efeito 3D */
+            transition: all 0.3s ease;
+            z-index: 1000;
+            /* Garante que fique por cima de tudo */
+        }
+
+        .btn-flutuante:hover {
+            background-color: #1a252f;
+            transform: translateY(-3px);
+            /* Faz o botão subir um pouquinho ao passar o mouse */
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+        }
     </style>
 </head>
 
@@ -37,7 +190,13 @@
             </div>
             <div class="form-group">
                 <label for="graduacaoAtual">Graduação/Faixa Atual:</label>
-                <input type="text" id="graduacaoAtual" placeholder="Ex: Branca" required>
+                <select id="graduacaoAtual" required>
+                    <option value="" disabled selected>Selecione a faixa...</option>
+                    <option value="Branca">Branca</option>
+                    <option value="Amarela">Amarela</option>
+                    <option value="Laranja">Laranja</option>
+                    <option value="Verde">Verde</option>
+                </select>
             </div>
             <div class="form-group">
                 <label for="tempoFaixa">Tempo com a Faixa Atual:</label>
@@ -45,38 +204,36 @@
             </div>
             <div class="form-group">
                 <label for="faixaNova">Avaliando para a Faixa/Nível:</label>
-                <input type="text" id="faixaNova" placeholder="Ex: Amarela" required>
+                <select id="faixaNova" required>
+                    <option value="" disabled selected>Selecione a faixa...</option>
+                    <option value="Amarela">Amarela</option>
+                    <option value="Laranja">Laranja</option>
+                    <option value="Verde">Verde</option>
+                    <option value="Cinza">Cinza</option>
+                </select>
             </div>
-
             <div class="form-group">
                 <label>Tipo de Avaliação:</label>
                 <div class="checkbox-group">
-                    <label class="checkbox-inline">
-                        <input type="checkbox" id="avalFaixa" checked> Faixa
-                    </label>
-                    <label class="checkbox-inline">
-                        <input type="checkbox" id="avalDistintivo"> Distintivo
-                    </label>
+                    <label class="checkbox-inline"><input type="checkbox" id="avalFaixa" checked> Faixa</label>
+                    <label class="checkbox-inline"><input type="checkbox" id="avalDistintivo"> Distintivo</label>
                 </div>
             </div>
-
             <div class="form-group">
                 <div class="checkbox-group" style="margin-top: 15px;">
-                    <label class="checkbox-inline" style="font-weight: bold;">
-                        <input type="checkbox" id="pagou"> Pagou a avaliação?
-                    </label>
+                    <label class="checkbox-inline" style="font-weight: bold;"><input type="checkbox" id="pagou"> Pagou a
+                        avaliação?</label>
                 </div>
             </div>
 
             <button type="submit">Cadastrar Aluno</button>
+            <div id="mensagemSucesso">Aluno cadastrado com sucesso!</div>
         </form>
     </div>
 
-    <div class="cards-grid" id="listaCards">
-    </div>
+    <a href="cards.html" class="btn-flutuante">Ver Cards ➔</a>
 
     <script src="EvalPKapp.js"></script>
-
 </body>
 
 </html>

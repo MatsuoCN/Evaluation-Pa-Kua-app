@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avaliação Pa-Kua - Cards</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            padding: 20px;
+            color: #333;
+            margin-bottom: 80px;
+        }
+
+        .cabecalho {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto 20px auto;
+        }
+
+        .cabecalho h2 {
+            color: #2c3e50;
+            margin: 0;
+        }
+
+        .btn {
+            padding: 10px 15px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            font-size: 14px;
+        }
+
+        .btn-limpar {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .btn-limpar:hover {
+            background-color: #c0392b;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: #fff;
+            border-left: 6px solid #27ae60;
+            padding: 15px;
+            border-radius: 6px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .card h3 {
+            margin: 0 0 10px 0;
+            font-size: 18px;
+            color: #2c3e50;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+        }
+
+        .card p {
+            margin: 6px 0;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .status-pago {
+            display: inline-block;
+            padding: 2px 6px;
+            font-size: 11px;
+            font-weight: bold;
+            border-radius: 3px;
+            float: right;
+        }
+
+        .pago-sim {
+            background-color: #2ecc71;
+            color: white;
+        }
+
+        .pago-nao {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .badge-tipo {
+            background-color: #34495e;
+            color: white;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 11px;
+            margin-right: 5px;
+        }
+
+        .sem-alunos {
+            text-align: center;
+            grid-column: 1 / -1;
+            color: #7f8c8d;
+            font-style: italic;
+            padding: 40px;
+        }
+
+        /* Estilo do Botão Flutuante (Fixo no canto inferior direito) */
+        .btn-flutuante {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: #2c3e50;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .btn-flutuante:hover {
+            background-color: #1a252f;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="cabecalho">
+        <h2>Alunos em Avaliação</h2>
+        <div class="botoes-topo">
+            <button class="btn btn-limpar" onclick="limparDados()">Limpar Todos os Dados</button>
+        </div>
+    </div>
+
+    <div class="cards-grid" id="listaCards">
+    </div>
+
+    <a href="index.html" class="btn-flutuante">⬅ Voltar ao Cadastro</a>
+
+    <script src="cards.js"></script>
+
+</body>
+
+</html>
