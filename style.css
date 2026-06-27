@@ -3,10 +3,12 @@ body {
     background-color: #f4f4f9;
     padding: 20px;
     color: #333;
+    margin-bottom: 80px;
+    /* Espaço para o botão não cobrir conteúdo */
 }
 
 .container {
-    max-width: 550px;
+    max-width: 650px;
     margin: 0 auto;
     background: #fff;
     padding: 20px;
@@ -31,13 +33,48 @@ h2 {
 }
 
 .form-group input[type="text"],
-.form-group input[type="number"],
-.form-group select {
+.form-group input[type="number"] {
     width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
+    background-color: #fff;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+}
+
+.form-group select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+    background-color: #fff;
+    font-family: Arial, sans-serif;
+    font-size: 15px;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.form-group select:hover {
+    border-color: #bababa;
+    background-color: #fafafa;
+}
+
+.form-group select:focus {
+    outline: none;
+    border-color: #e67e22;
+    box-shadow: 0 0 8px rgba(230, 126, 34, 0.3);
 }
 
 .checkbox-group {
@@ -61,7 +98,7 @@ h2 {
     height: 16px;
 }
 
-button {
+button[type="submit"] {
     width: 100%;
     padding: 12px;
     background-color: #e67e22;
@@ -74,64 +111,43 @@ button {
     margin-top: 10px;
 }
 
-button:hover {
+button[type="submit"]:hover {
     background-color: #d35400;
 }
 
-.cards-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 20px;
-    margin-top: 30px;
-}
-
-.card {
-    background: #fff;
-    border-left: 6px solid #27ae60;
-    padding: 15px;
-    border-radius: 6px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    position: relative;
-}
-
-.card h3 {
-    margin: 0 0 10px 0;
-    font-size: 18px;
-    color: #2c3e50;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 5px;
-}
-
-.card p {
-    margin: 6px 0;
-    font-size: 14px;
-    color: #555;
-}
-
-.status-pago {
-    display: inline-block;
-    padding: 2px 6px;
-    font-size: 11px;
-    font-weight: bold;
-    border-radius: 3px;
-
-}
-
-.pago-sim {
+#mensagemSucesso {
+    display: none;
     background-color: #2ecc71;
     color: white;
+    padding: 10px;
+    text-align: center;
+    border-radius: 4px;
+    margin-top: 15px;
+    font-weight: bold;
 }
 
-.pago-nao {
-    background-color: #e74c3c;
+/* Estilo do Botão Flutuante (Fixo no canto inferior direito) */
+.btn-flutuante {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background-color: #2c3e50;
     color: white;
+    padding: 15px 25px;
+    border-radius: 50px;
+    /* Deixa o botão arredondado */
+    text-decoration: none;
+    font-weight: bold;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    /* Sombra para dar efeito 3D */
+    transition: all 0.3s ease;
+    z-index: 1000;
+    /* Garante que fique por cima de tudo */
 }
 
-.badge-tipo {
-    background-color: #34495e;
-    color: white;
-    padding: 2px 5px;
-    border-radius: 3px;
-    font-size: 11px;
-    margin-right: 5px;
+.btn-flutuante:hover {
+    background-color: #1a252f;
+    transform: translateY(-3px);
+    /* Faz o botão subir um pouquinho ao passar o mouse */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
 }
