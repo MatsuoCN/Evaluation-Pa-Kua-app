@@ -151,3 +151,20 @@ button[type="submit"]:hover {
     /* Faz o botão subir um pouquinho ao passar o mouse */
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
 }
+
+.btn-editar {
+    margin-left: auto;
+    /* Empurra o botão para a extrema direita */
+    background-color: #f39c12;
+    color: white;
+    text-decoration: none;
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+    transition: background 0.2s;
+}
+
+.btn-editar:hover {
+    background-color: #d68910;
+}

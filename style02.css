@@ -211,3 +211,19 @@ body {
     /* Remove a borda antiga que ficava embaixo do H3 */
     padding: 0;
 }
+
+.btn-editar {
+    margin-left: auto;
+    background-color: #f39c12;
+    color: white;
+    text-decoration: none;
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+    transition: background 0.2s;
+}
+
+.btn-editar:hover {
+    background-color: #d68910;
+}
