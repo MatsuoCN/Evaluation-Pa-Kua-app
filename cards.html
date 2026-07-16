@@ -10,9 +10,11 @@
 
 <body>
 
-    <div class="cabecalho">
+   <div class="cabecalho">
         <h2>Alunos em Avaliação</h2>
         <div class="botoes-topo">
+            <!-- NOVO BOTÃO DE PDF AQUI -->
+            <button class="btn btn-pdf" id="btnGerarPDF">📄 Salvar em PDF</button>
             <button class="btn btn-limpar" onclick="limparDados()">Limpar Todos os Dados</button>
         </div>
     </div>
@@ -21,9 +23,10 @@
     </div>
 
     <a href="index.html" class="btn-flutuante">⬅ Voltar ao Cadastro</a>
+<!-- Biblioteca que transforma HTML em PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="cards.js"></script>
-
 </body>
-
 </html>

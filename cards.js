@@ -47,9 +47,8 @@ $(document).ready(function () {
                 const imagemSrc = aluno.foto ? aluno.foto : "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
 
                 // AQUI É ONDE O BOTÃO É DESENHADO NA TELA
-                const cardHTML = `
+            const cardHTML = `
                         <div class="card" style="background-color: ${corFundo}; border-left-color: ${corBorda};">
-                            ${statusPagamentoHTML}
                             
                             <div class="card-cabecalho">
                                 <img src="${imagemSrc}" class="foto-aluno" alt="Foto">
@@ -58,8 +57,11 @@ $(document).ready(function () {
                                     <span style="font-size: 13px; color: #7f8c8d;">Idade: ${aluno.idade} anos</span>
                                 </div>
                                 
-                                <!-- OLHA O BOTÃO AQUI -->
-                                <a href="index.html?edit=${index}" class="btn-editar">✏️ Editar</a>
+                                <!-- ALTERAMOS O "gap: 8px" PARA "gap: 15px" (ou o valor que preferir) -->
+                                <div class="acoes-card" style="margin-left: auto; display: flex; flex-direction: column; align-items: flex-end; gap: 15px;">
+                                    ${statusPagamentoHTML}
+                                    <a href="index.html?edit=${index}" class="btn-editar" style="margin-left: 0;">✏️ Editar</a>
+                                </div>
                             </div>
                             
                             <p><strong>Recinto:</strong> ${aluno.recinto}</p>
@@ -87,4 +89,32 @@ $(document).ready(function () {
 
         carregarCards();
     }
+
+    // ==========================================
+    // LÓGICA PARA GERAR O PDF
+    // ==========================================
+    $('#btnGerarPDF').on('click', function() {
+        // Seleciona a área que queremos transformar em PDF (apenas os cards)
+        const elementoParaPDF = document.getElementById('listaCards');
+
+        // Configurações de qualidade e tamanho da página
+        const opcoesPDF = {
+            margin:       10, // Margem de 10mm nas bordas da página
+            filename:     'Avaliacoes_PaKua.pdf', // Nome do arquivo que será baixado
+            image:        { type: 'jpeg', quality: 0.98 }, // Alta qualidade
+            html2canvas:  { scale: 2, useCORS: true }, // scale: 2 melhora a resolução
+            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' } // Formato A4 padrão
+        };
+
+        // Muda o texto do botão temporariamente para mostrar que está carregando
+        const $botao = $(this);
+        const textoOriginal = $botao.text();
+        $botao.text('⏳ Gerando PDF...').prop('disabled', true);
+
+        // Gera o PDF e depois volta o botão ao normal
+        html2pdf().set(opcoesPDF).from(elementoParaPDF).save().then(function() {
+            $botao.text(textoOriginal).prop('disabled', false);
+        });
+    });
+    
 });

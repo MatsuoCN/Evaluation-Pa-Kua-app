@@ -227,3 +227,6 @@ body {
 .btn-editar:hover {
     background-color: #d68910;
 }
+
+.btn-pdf { background-color: #3498db; color: white; }
+.btn-pdf:hover { background-color: #2980b9; }
