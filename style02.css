@@ -230,3 +230,26 @@ body {
 
 .btn-pdf { background-color: #3498db; color: white; }
 .btn-pdf:hover { background-color: #2980b9; }
+
+.form-row {
+    display: flex;
+    gap: 15px; /* Espaço entre os campos */
+    margin-bottom: 15px; /* Espaço para o campo de baixo */
+}
+
+/* Faz com que os campos dentro da linha dividam o espaço por igual */
+.form-row .form-group {
+    flex: 1;
+    margin-bottom: 0; /* Remove a margem padrão para alinhar perfeitamente */
+}
+
+/* Regra para Celulares: Se a tela for pequena, empilha os campos novamente */
+@media (max-width: 600px) {
+    .form-row {
+        flex-direction: column;
+        gap: 0;
+    }
+    .form-row .form-group {
+        margin-bottom: 15px;
+    }
+}

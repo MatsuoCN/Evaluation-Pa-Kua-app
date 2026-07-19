@@ -14,11 +14,17 @@
         <h2>Cadastro de Avaliação - Pa-Kua</h2>
 
         <form id="formCadastro">
-            <div class="form-group">
-                <label for="fotoAluno">Foto do Aluno (Tire a foto ou escolha do celular):</label>
-                <input type="file" id="fotoAluno" accept="image/*">
-            </div>
-
+          <div class="form-group">
+            <label>Foto do Aluno:</label>
+            
+            <!-- 1. O botão original fica escondido (display: none) -->
+            <input type="file" id="fotoAluno" accept="image/*" style="display: none;">
+            
+            <!-- 2. Este "label" é o nosso novo botão bonito. O 'for' liga ele ao input escondido -->
+            <label for="fotoAluno" class="btn-upload" id="labelFoto">
+                📷 Escolher Arquivo / Tirar Foto
+            </label>
+        </div>
             <div class="form-group">
                 <label for="nome">Nome:</label>
                 <input type="text" id="nome" required>
@@ -27,10 +33,8 @@
                 <label for="sobrenome">Sobrenome:</label>
                 <input type="text" id="sobrenome" required>
             </div>
-            <div class="form-group">
-                <label for="idade">Idade:</label>
-                <input type="number" id="idade" min="0" required>
-            </div>
+           
+           
             <div class="form-group">
                 <label for="orientador">Orientador(a):</label>
                 <input type="text" id="orientador" required>
@@ -55,10 +59,7 @@
                     <option value="III Grau">III Grau</option>
                 </select>
             </div>
-            <div class="form-group">
-                <label for="tempoFaixa">Tempo com a Faixa Atual:</label>
-                <input type="text" id="tempoFaixa" placeholder="Ex: 6 meses, 1 ano" required>
-            </div>
+            
             <div class="form-group">
                 <label for="faixaNova">Avaliando para a Faixa/Nível:</label>
                 <select id="faixaNova" required>
@@ -69,6 +70,22 @@
                     <option value="Cinza">Cinza</option>
                 </select>
             </div>
+             <div class="form-row">
+            <div class="form-group">
+                <label for="idade">Idade:</label>
+                <input type="number" id="idade" min="0" required>
+            </div>
+           
+          
+            <div class="form-group">
+                <label for="tempoFaixa">Tempo na Faixa:</label>
+                <input type="text" id="tempoFaixa" placeholder="Ex: 6 meses" required>
+            </div>
+             <div class="form-group">
+                <label for="telefone">Telefone / WhatsApp:</label>
+                <input type="tel" id="telefone" placeholder="(XX) 9XXXX-XXXX" required>
+            </div>
+        </div>
             <div class="form-group">
                 <label>Tipo de Avaliação:</label>
                 <div class="checkbox-group">

@@ -30,19 +30,20 @@ $(document).ready(function () {
 
                 canvas.width = w; canvas.height = h;
                 canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-                callback(canvas.toDataURL('image/jpeg', 0.7)); // Devolve a foto leve
+                callback(canvas.toDataURL('image/jpeg', 0.7)); 
             };
             img.src = e.target.result;
         };
         leitor.readAsDataURL(arquivo);
     }
 
-    // 2. Ferramenta para montar o objeto do Aluno
+    // 2. Ferramenta para montar o objeto do Aluno (Atualizada com Telefone)
     function coletarDadosAluno(fotoBase64) {
         return {
             foto: fotoBase64,
             nome: $('#nome').val(),
             sobrenome: $('#sobrenome').val(),
+            telefone: $('#telefone').val(), // <-- Adicionado aqui
             idade: $('#idade').val(),
             orientador: $('#orientador').val(),
             recinto: $('#recinto').val(),
@@ -63,44 +64,6 @@ $(document).ready(function () {
         return badges.length ? badges.join(' ') : '<span class="badge-tipo">Não especificado</span>';
     }
 
-    // 4. Ferramenta para desenhar o HTML completo de um Card
-    function gerarCardHTML(aluno) {
-        const cores = PALETA[aluno.graduacaoAtual] || { fundo: "#ffffff", borda: "#bdc3c7" };
-        const statusPago = aluno.pagou ? '<span class="status-pago pago-sim">PAGO</span>' : '<span class="status-pago pago-nao">PENDENTE</span>';
-        const foto = aluno.foto || FOTO_PADRAO;
-
-        const quadradosHTML = Array(8).fill(`
-            <div class="quadrado-maior">
-                <input type="checkbox" class="quadrante"><input type="checkbox" class="quadrante">
-                <input type="checkbox" class="quadrante"><input type="checkbox" class="quadrante">
-            </div>
-        `).join('');
-
-        return `
-            <div class="card" style="background-color: ${cores.fundo}; border-left-color: ${cores.borda};">
-                ${statusPago}
-                <div class="card-cabecalho">
-                    <img src="${foto}" class="foto-aluno" alt="Foto">
-                    <div class="card-titulos">
-                        <h3>${aluno.nome} ${aluno.sobrenome}</h3>
-                        <span style="font-size: 13px; color: #7f8c8d;">Idade: ${aluno.idade} anos</span>
-                    </div>
-                </div>
-                <p><strong>Recinto:</strong> ${aluno.recinto}</p>
-                <p><strong>Orientador(a):</strong> ${aluno.orientador}</p>
-                <p><strong>Graduação Atual:</strong> ${aluno.graduacaoAtual} (${aluno.tempoFaixa})</p>
-                <p><strong>Avaliando para:</strong> ${aluno.faixaNova}</p>
-                <p style="margin-top: 10px;">${gerarBadges(aluno)}</p>
-                <div class="area-quadrantes">${quadradosHTML}</div>
-            </div>
-        `;
-    }
-
-    // ==========================================
-    // LÓGICA DE FUNCIONAMENTO (Ação!)
-    // ==========================================
-
-    // ---> SE ESTIVER NA PÁGINA DE CADASTRO
     // ==========================================
     // LÓGICA DA PÁGINA DE CADASTRO (index.html)
     // ==========================================
@@ -108,24 +71,22 @@ $(document).ready(function () {
 
     if ($formCadastro.length > 0) {
 
-        // 1. LÊ SE ESTAMOS EDITANDO ALGUÉM
         const urlParams = new URLSearchParams(window.location.search);
-        const editIndex = urlParams.get('edit'); // Pega o número do aluno na URL
+        const editIndex = urlParams.get('edit'); 
         const modoEdicao = editIndex !== null;
 
         let listaAlunos = JSON.parse(localStorage.getItem('alunosPaKua')) || [];
 
-        // 2. SE FOR EDIÇÃO, PREENCHE OS CAMPOS
+        // SE FOR EDIÇÃO, PREENCHE OS CAMPOS
         if (modoEdicao && listaAlunos[editIndex]) {
             const alunoEditado = listaAlunos[editIndex];
 
-            // Muda os títulos para fazer sentido
             $('h2').text('Editar Aluno');
             $('button[type="submit"]').text('Salvar Alterações');
 
-            // Preenche os dados
             $('#nome').val(alunoEditado.nome);
             $('#sobrenome').val(alunoEditado.sobrenome);
+            $('#telefone').val(alunoEditado.telefone); // <-- Preenche o telefone na edição
             $('#idade').val(alunoEditado.idade);
             $('#orientador').val(alunoEditado.orientador);
             $('#recinto').val(alunoEditado.recinto);
@@ -141,51 +102,31 @@ $(document).ready(function () {
             evento.preventDefault();
             const campoFoto = $('#fotoAluno')[0];
 
-            // Função que salva os dados (nova ou editada)
             const finalizarSalvamento = function (fotoBase64) {
-
-                // Se estiver editando e não colocou foto nova, mantém a velha
                 if (modoEdicao && fotoBase64 === "") {
                     fotoBase64 = listaAlunos[editIndex].foto;
                 }
 
-                const dadosAluno = {
-                    foto: fotoBase64,
-                    nome: $('#nome').val(),
-                    sobrenome: $('#sobrenome').val(),
-                    idade: $('#idade').val(),
-                    orientador: $('#orientador').val(),
-                    recinto: $('#recinto').val(),
-                    graduacaoAtual: $('#graduacaoAtual').val(),
-                    tempoFaixa: $('#tempoFaixa').val(),
-                    faixaNova: $('#faixaNova').val(),
-                    pagou: $('#pagou').prop('checked'),
-                    avalFaixa: $('#avalFaixa').prop('checked'),
-                    avalDistintivo: $('#avalDistintivo').prop('checked')
-                };
+                // Coleta todos os dados atualizados
+                const dadosAluno = coletarDadosAluno(fotoBase64);
 
                 if (modoEdicao) {
-                    // Se for edição, substitui na mesma posição
                     listaAlunos[editIndex] = dadosAluno;
                 } else {
-                    // Se for novo, adiciona no final
                     listaAlunos.push(dadosAluno);
                 }
 
                 localStorage.setItem('alunosPaKua', JSON.stringify(listaAlunos));
 
                 if (modoEdicao) {
-                    // Se editou, volta para os cards na mesma hora
                     window.location.href = "cards.html";
                 } else {
-                    // Se cadastrou novo, limpa a tela
                     $formCadastro[0].reset();
                     $('#avalFaixa').prop('checked', true);
                     $('#mensagemSucesso').text('Cadastrado com sucesso!').fadeIn().delay(3000).fadeOut();
                 }
             };
 
-            // Lógica de compressão de foto
             if (campoFoto.files.length > 0) {
                 const leitorDeImagem = new FileReader();
                 leitorDeImagem.onload = function (eventoLeitura) {
@@ -208,93 +149,110 @@ $(document).ready(function () {
                 finalizarSalvamento("");
             }
         });
-    }
-    // Usa a ferramenta 1 se tiver foto, senão salva vazio
-    if (campoFoto.files.length) comprimirImagem(campoFoto.files[0], salvar);
-    else salvar("");
-});
+    } // <-- O bloco do cadastro agora fecha corretamente aqui, sem aquelas linhas soltas!
 
+    // ==========================================
+    // LÓGICA DA PÁGINA DE CARDS (cards.html)
+    // ==========================================
+    if ($('#listaCards').length) {
+        function carregarCards() {
+            const alunos = JSON.parse(localStorage.getItem('alunosPaKua')) || [];
+            $('#listaCards').empty();
 
-// ---> SE ESTIVER NA PÁGINA DE CARDS
-if ($('#listaCards').length) {
-    function carregarCards() {
-        const alunos = JSON.parse(localStorage.getItem('alunosPaKua')) || [];
-        $('#listaCards').empty();
+            if (!alunos.length) {
+                $('#listaCards').html('<div class="sem-alunos">Nenhum aluno cadastrado ainda.</div>');
+                return;
+            }
 
-        if (!alunos.length) {
-            $('#listaCards').html('<div class="sem-alunos">Nenhum aluno cadastrado ainda.</div>');
-            return;
-        }
+            alunos.forEach((aluno, index) => {
+                const statusPagamentoHTML = aluno.pagou
+                    ? '<span class="status-pago pago-sim">PAGO</span>'
+                    : '<span class="status-pago pago-nao">PENDENTE</span>';
 
-        // Para cada aluno, usa a ferramenta 4 para desenhar e injeta na tela
-        // ATENÇÃO AQUI: Adicionamos o "index" ao lado do aluno
-        alunos.forEach((aluno, index) => {
-            const statusPagamentoHTML = aluno.pagou
-                ? '<span class="status-pago pago-sim">PAGO</span>'
-                : '<span class="status-pago pago-nao">PENDENTE</span>';
+                const tiposHTML = gerarBadges(aluno);
 
-            let tiposValidos = [];
-            if (aluno.avalFaixa) tiposValidos.push('<span class="badge-tipo">Faixa</span>');
-            if (aluno.avalDistintivo) tiposValidos.push('<span class="badge-tipo">Distintivo</span>');
-            const tiposHTML = tiposValidos.length > 0 ? tiposValidos.join(' ') : '<span class="badge-tipo">Não especificado</span>';
+                const corFundo = PALETA[aluno.graduacaoAtual]?.fundo || "#ffffff";
+                const corBorda = PALETA[aluno.graduacaoAtual]?.borda || "#bdc3c7";
 
-            const paletaFundo = {
-                "Branca": "#ffffff", "Amarela": "#fef9e7", "Laranja": "#fdf2e9", "Verde": "#e9f7ef"
-            };
-            const paletaBorda = {
-                "Branca": "#bdc3c7", "Amarela": "#f1c40f", "Laranja": "#e67e22", "Verde": "#27ae60"
-            };
+                const quadradosProgressoHTML = Array(8).fill(`
+                        <div class="quadrado-maior">
+                            <input type="checkbox" class="quadrante">
+                            <input type="checkbox" class="quadrante">
+                            <input type="checkbox" class="quadrante">
+                            <input type="checkbox" class="quadrante">
+                        </div>
+                    `).join('');
 
-            const corFundo = paletaFundo[aluno.graduacaoAtual] || "#ffffff";
-            const corBorda = paletaBorda[aluno.graduacaoAtual] || "#bdc3c7";
+                const imagemSrc = aluno.foto ? aluno.foto : FOTO_PADRAO;
 
-            const quadradosProgressoHTML = Array(8).fill(`
-                    <div class="quadrado-maior">
-                        <input type="checkbox" class="quadrante">
-                        <input type="checkbox" class="quadrante">
-                        <input type="checkbox" class="quadrante">
-                        <input type="checkbox" class="quadrante">
-                    </div>
-                `).join('');
-
-            const imagemSrc = aluno.foto ? aluno.foto : "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
-
-            const cardHTML = `
-                    <div class="card" style="background-color: ${corFundo}; border-left-color: ${corBorda};">
-                        ${statusPagamentoHTML}
-                        
-                        <div class="card-cabecalho">
-                            <img src="${imagemSrc}" class="foto-aluno" alt="Foto">
-                            <div class="card-titulos">
-                                <h3>${aluno.nome} ${aluno.sobrenome}</h3>
-                                <span style="font-size: 13px; color: #7f8c8d;">Idade: ${aluno.idade} anos</span>
+                // Template do Card atualizado com Telefone e estrutura anti-atropelamento (gap: 15px)
+                const cardHTML = `
+                        <div class="card" style="background-color: ${corFundo}; border-left-color: ${corBorda};">
+                            
+                            <div class="card-cabecalho">
+                                <img src="${imagemSrc}" class="foto-aluno" alt="Foto">
+                                <div class="card-titulos">
+                                    <h3>${aluno.nome} ${aluno.sobrenome}</h3>
+                                    <span style="font-size: 13px; color: #7f8c8d;">Idade: ${aluno.idade} anos</span>
+                                </div>
+                                
+                                <div class="acoes-card" style="margin-left: auto; display: flex; flex-direction: column; align-items: flex-end; gap: 15px;">
+                                    ${statusPagamentoHTML}
+                                    <a href="index.html?edit=${index}" class="btn-editar" style="margin-left: 0;">✏️ Editar</a>
+                                </div>
                             </div>
-                            <!-- AQUI ESTÁ O NOVO BOTÃO DE EDITAR -->
-                            <a href="index.html?edit=${index}" class="btn-editar">✏️ Editar</a>
+                            
+                            <!-- Exibição do Telefone no Card -->
+                            <p><strong>Telefone:</strong> ${aluno.telefone || 'Não informado'}</p>
+                            <p><strong>Recinto:</strong> ${aluno.recinto}</p>
+                            <p><strong>Orientador(a):</strong> ${aluno.orientador}</p>
+                            <p><strong>Graduação Atual:</strong> ${aluno.graduacaoAtual} (${aluno.tempoFaixa})</p>
+                            <p><strong>Avaliando para:</strong> ${aluno.faixaNova}</p>
+                            <p style="margin-top: 10px;">${tiposHTML}</p>
+                            
+                            <div class="area-quadrantes">
+                                ${quadradosProgressoHTML}
+                            </div>
                         </div>
-                        
-                        <p><strong>Recinto:</strong> ${aluno.recinto}</p>
-                        <p><strong>Orientador(a):</strong> ${aluno.orientador}</p>
-                        <p><strong>Graduação Atual:</strong> ${aluno.graduacaoAtual} (${aluno.tempoFaixa})</p>
-                        <p><strong>Avaliando para:</strong> ${aluno.faixaNova}</p>
-                        <p style="margin-top: 10px;">${tiposHTML}</p>
-                        
-                        <div class="area-quadrantes">
-                            ${quadradosProgressoHTML}
-                        </div>
-                    </div>
-                `;
+                    `;
 
-            $listaCards.append(cardHTML);
-        });
+                $('#listaCards').append(cardHTML);
+            });
+        }
+
+        window.limparDados = function () {
+            if (confirm("Tem certeza que deseja apagar todos?")) {
+                localStorage.removeItem('alunosPaKua');
+                carregarCards();
+            }
+        };
+
+        carregarCards();
     }
 
-    window.limparDados = function () {
-        if (confirm("Tem certeza que deseja apagar todos?")) {
-            localStorage.removeItem('alunosPaKua');
-            carregarCards();
-        }
-    };
+    // ==========================================
+    // LÓGICA DE PREENCHIMENTO PROGRESSIVO DOS QUADRANTES
+    // ==========================================
+    $(document).on('click', '.quadrante', function(e) {
+        e.preventDefault(); 
 
-    carregarCards();
-};
+        const $quadradoMaior = $(this).closest('.quadrado-maior');
+        const $todosQuadrantes = $quadradoMaior.find('.quadrante');
+        const indexClicado = $todosQuadrantes.index(this);
+
+        let ultimoPintado = -1;
+        $todosQuadrantes.each(function(i) {
+            if ($(this).prop('checked')) {
+                ultimoPintado = i;
+            }
+        });
+
+        if (indexClicado === ultimoPintado) {
+            $todosQuadrantes.prop('checked', false);
+        } else {
+            $todosQuadrantes.each(function(i) {
+                $(this).prop('checked', i <= indexClicado);
+            });
+        }
+    });
+});
