@@ -204,7 +204,7 @@ button[type="submit"]:hover {
     text-align: center;
     transition: background 0.3s, transform 0.1s;
     box-sizing: border-box;
-    width: 50%;
+    width: 30%;
 }
 
 .btn-upload:hover {
@@ -213,4 +213,37 @@ button[type="submit"]:hover {
 
 .btn-upload:active {
     transform: scale(0.98); /* Efeitinho de "apertar" quando clica */
+}
+
+/* Container que mantém o título e o select alinhados */
+.header-avaliacao {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px; /* Espaço entre o cabeçalho e o botão abaixo */
+}
+
+/* Estilo principal do select */
+.select-modalidade {
+    padding: 8px 12px;
+    font-size: 16px;
+    color: #333;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 6px; /* Bordas arredondadas */
+    cursor: pointer;
+    outline: none;
+    transition: all 0.3s ease; /* Animação suave nas mudanças de estado */
+}
+
+/* Efeito quando o usuário passa o mouse por cima */
+.select-modalidade:hover {
+    border-color: #888;
+}
+
+/* Efeito quando o usuário clica/foca no campo */
+.select-modalidade:focus {
+    border-color: #0056b3; /* Cor da borda ao focar (azul) */
+    box-shadow: 0 0 5px rgba(0, 86, 179, 0.3); /* Sombra azul clara */
+    background-color: #fff;
 }
