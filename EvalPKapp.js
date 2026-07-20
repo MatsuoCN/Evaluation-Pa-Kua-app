@@ -259,3 +259,15 @@ $(document).ready(function () {
         }
     });
 });
+
+const selectModalidade = document.getElementById('modalidade');
+
+if (selectModalidade) {
+    selectModalidade.addEventListener('change', function() {
+        // Pega o texto visível da opção selecionada (ex: "Arqueria")
+        const nomeModalidade = this.options[this.selectedIndex].text;
+        
+        // Salva essa informação no navegador com o nome "modalidadeEscolhida"
+        localStorage.setItem('modalidadeEscolhida', nomeModalidade);
+    });
+}

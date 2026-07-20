@@ -223,27 +223,42 @@ button[type="submit"]:hover {
     margin-bottom: 20px; /* Espaço entre o cabeçalho e o botão abaixo */
 }
 
-/* Estilo principal do select */
+/* Estilo principal do select alinhado com os inputs do formulário */
 .select-modalidade {
-    padding: 8px 12px;
-    font-size: 16px;
+    /* Espaçamento e Fontes iguais aos inputs de texto */
+    padding: 10px 35px 10px 10px; /* 35px de espaço na direita para não encostar na seta */
+    font-family: Arial, sans-serif;
+    font-size: 14px;
     color: #333;
-    background-color: #f9f9f9;
+
+    /* Fundo e Bordas idênticos aos inputs */
+    background-color: #fff;
     border: 1px solid #ccc;
-    border-radius: 6px; /* Bordas arredondadas */
+    border-radius: 4px;
+    box-sizing: border-box;
+
+    /* Seta customizada igual à dos outros selects do seu formulário */
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 16px;
+
     cursor: pointer;
-    outline: none;
-    transition: all 0.3s ease; /* Animação suave nas mudanças de estado */
+    transition: all 0.3s ease;
 }
 
-/* Efeito quando o usuário passa o mouse por cima */
+/* Efeito idêntico aos do form quando passa o mouse */
 .select-modalidade:hover {
     border-color: #888;
+    background-color: #fafafa;
 }
 
-/* Efeito quando o usuário clica/foca no campo */
+/* Efeito idêntico aos do form quando clica (Brilho Laranja) */
 .select-modalidade:focus {
-    border-color: #0056b3; /* Cor da borda ao focar (azul) */
-    box-shadow: 0 0 5px rgba(0, 86, 179, 0.3); /* Sombra azul clara */
-    background-color: #fff;
+    outline: none;
+    border-color: #e67e22;
+    box-shadow: 0 0 8px rgba(230, 126, 34, 0.3);
 }
