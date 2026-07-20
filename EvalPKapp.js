@@ -96,6 +96,7 @@ $(document).ready(function () {
             $('#pagou').prop('checked', alunoEditado.pagou);
             $('#avalFaixa').prop('checked', alunoEditado.avalFaixa);
             $('#avalDistintivo').prop('checked', alunoEditado.avalDistintivo);
+
         }
 
         $formCadastro.on('submit', function (evento) {
@@ -122,6 +123,7 @@ $(document).ready(function () {
                     window.location.href = "cards.html";
                 } else {
                     $formCadastro[0].reset();
+                    $('#labelFoto').text('📷 Escolher Arquivo / Tirar Foto').css('background-color', '#34495e');
                     $('#avalFaixa').prop('checked', true);
                     $('#mensagemSucesso').text('Cadastrado com sucesso!').fadeIn().delay(3000).fadeOut();
                 }
@@ -200,6 +202,7 @@ $(document).ready(function () {
                                     ${statusPagamentoHTML}
                                     <a href="index.html?edit=${index}" class="btn-editar" style="margin-left: 0;">✏️ Editar</a>
                                 </div>
+                                
                             </div>
                             
                             <!-- Exibição do Telefone no Card -->

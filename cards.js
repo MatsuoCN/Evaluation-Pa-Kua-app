@@ -15,6 +15,7 @@ $(document).ready(function () {
             }
 
             // ATENÇÃO AQUI: O 'index' é obrigatório para o botão funcionar!
+         // Para cada aluno, desenha o card na tela
             alunos.forEach((aluno, index) => {
                 const statusPagamentoHTML = aluno.pagou
                     ? '<span class="status-pago pago-sim">PAGO</span>'
@@ -46,8 +47,8 @@ $(document).ready(function () {
 
                 const imagemSrc = aluno.foto ? aluno.foto : "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
 
-                // AQUI É ONDE O BOTÃO É DESENHADO NA TELA
-            const cardHTML = `
+                // AQUI ESTÁ O DESENHO DO CARD COM O TELEFONE INCLUÍDO
+                const cardHTML = `
                         <div class="card" style="background-color: ${corFundo}; border-left-color: ${corBorda};">
                             
                             <div class="card-cabecalho">
@@ -57,15 +58,17 @@ $(document).ready(function () {
                                     <span style="font-size: 13px; color: #7f8c8d;">Idade: ${aluno.idade} anos</span>
                                 </div>
                                 
-                                <!-- ALTERAMOS O "gap: 8px" PARA "gap: 15px" (ou o valor que preferir) -->
                                 <div class="acoes-card" style="margin-left: auto; display: flex; flex-direction: column; align-items: flex-end; gap: 15px;">
                                     ${statusPagamentoHTML}
                                     <a href="index.html?edit=${index}" class="btn-editar" style="margin-left: 0;">✏️ Editar</a>
                                 </div>
                             </div>
                             
+                            <!-- A LINHA DO TELEFONE APARECE AQUI! -->
+                            <p style="margin-top: 5px;"><strong>WhatsApp:</strong> ${aluno.telefone ? aluno.telefone : 'Não preenchido'}</p>
+                            
                             <p><strong>Recinto:</strong> ${aluno.recinto}</p>
-                            <p><strong>Orientador(a):</strong> ${aluno.orientador}</p>
+                            <p><strong>Orientador:</strong> ${aluno.orientador}</p>
                             <p><strong>Graduação Atual:</strong> ${aluno.graduacaoAtual} (${aluno.tempoFaixa})</p>
                             <p><strong>Avaliando para:</strong> ${aluno.faixaNova}</p>
                             <p style="margin-top: 10px;">${tiposHTML}</p>
@@ -76,7 +79,7 @@ $(document).ready(function () {
                         </div>
                     `;
 
-                $listaCards.append(cardHTML);
+                $('#listaCards').append(cardHTML);
             });
         }
 
