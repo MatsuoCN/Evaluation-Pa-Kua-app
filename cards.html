@@ -4,31 +4,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Avaliação Pa-Kua - Cards</title>
+    <title>Avaliação Pa-Kua</title>
+    
+    <!-- Estilos -->
     <link rel="stylesheet" href="style02.css">
+    <link rel="stylesheet" href="pdf.css">
 </head>
 
 <body>
 
-   <div class="cabecalho">
-    <h1 id="tituloPagina">Cards de Avaliação</h1>
-      
-    <h2>Alunos em Avaliação</h2>
-        <div class="botoes-topo">
-            <!-- NOVO BOTÃO DE PDF AQUI -->
-            <button class="btn btn-pdf" id="btnGerarPDF">📄 Salvar em PDF</button>
-            <button class="btn btn-limpar" onclick="limparDados()">Limpar Todos os Dados</button>
+    <div class="dashboard">
+
+        <!-- ===============================
+             CABEÇALHO PRINCIPAL
+        ================================= -->
+        <header class="cabecalho">
+            <div class="marca">
+                <!-- Futuramente colocar aqui: logo do ideograma Pa-Kua -->
+                <div class="logo-placeholder">☯</div>
+                <div>
+                    <h1 id="tituloPagina">Avaliação Pa-Kua</h1>
+                    <h2>Sistema de avaliação de alunos</h2>
+                </div>
+            </div>
+
+            <div class="botoes-topo">
+            <!-- Botão Único de PDF -->
+            <button class="btn btn-pdf" id="btnGerarPDF">
+                📄 Gerar PDF
+            </button>
+
+            <button class="btn btn-limpar" onclick="limparDados()">
+                🗑 Limpar Dados
+            </button>
         </div>
+            </div>
+        </header>
+
+        <!-- ===============================
+             TITULO DA PÁGINA
+        ================================= -->
+        <section class="page-title">
+            <h2>Cards de Avaliação</h2>
+            <p>Todos os alunos cadastrados no sistema.</p>
+        </section>
+
+        <!-- ===============================
+             LISTAGEM DOS CARDS
+        ================================= -->
+        <main class="cards-grid" id="listaCards">
+            <!-- Os cards serão injetados aqui pelo JavaScript -->
+        </main>
+
     </div>
 
-    <div class="cards-grid" id="listaCards">
-    </div>
+    <!-- ===============================
+         BOTÃO VOLTAR
+    ================================= -->
+    <a href="index.html" class="btn-flutuante">
+        ⬅ Voltar ao Cadastro
+    </a>
 
-    <a href="index.html" class="btn-flutuante">⬅ Voltar ao Cadastro</a>
-<!-- Biblioteca que transforma HTML em PDF -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    
+    <!-- ===============================
+         SCRIPTS
+    ================================= -->
+    <!-- Bibliotecas externas -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <!-- Configurações do sistema -->
+    <script src="config.js"></script>
+
+    <!-- Módulos do sistema -->
     <script src="cards.js"></script>
+    <script src="pdf.js"></script>
+
 </body>
 </html>

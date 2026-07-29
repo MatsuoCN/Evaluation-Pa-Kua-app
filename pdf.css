@@ -1,0 +1,110 @@
+/*====================================================
+    PA-KUA AVALIAÇÕES
+    PDF.CSS - EXCLUSIVO PARA O 3x3
+====================================================*/
+
+.pdf-container {
+    font-family: 'Inter', sans-serif;
+}
+
+/* Oculta os itens nativos de tela no card impresso */
+.pdf-card .card-footer {
+    display: none !important;
+}
+
+.pdf-card {
+    background-color: #ffffff !important;
+    border: 2px solid #e5e7eb !important;
+    border-radius: 12px !important;
+    padding: 15px !important;
+    box-shadow: none !important;
+    transform: none !important;
+    animation: none !important;
+    page-break-inside: avoid;
+    break-inside: avoid;
+}
+
+/* Redução para caber as 3 linhas no A4 */
+.pdf-card .card-header {
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+}
+
+.pdf-card .foto-wrapper {
+    width: 55px !important;
+    height: 55px !important;
+}
+
+.pdf-card .dados-principais h3 {
+    font-size: 16px !important;
+}
+
+.pdf-card .modalidade, 
+.pdf-card .idade {
+    font-size: 11px !important;
+}
+
+/* Ajustes da Faixa */
+.pdf-card .faixas {
+    margin: 10px 0;
+    gap: 15px;
+}
+
+.pdf-card .faixa-box {
+    padding: 10px;
+    min-width: 90px;
+}
+
+.pdf-card .faixa-box small {
+    font-size: 9px;
+}
+
+.pdf-card .faixa-box strong {
+    font-size: 13px;
+}
+
+/* Grade de informações (Telefone, etc) */
+.pdf-card .info-grid {
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.pdf-card .info-item {
+    padding: 8px;
+}
+
+.pdf-card .info-item span {
+    font-size: 10px;
+}
+
+.pdf-card .info-item strong {
+    font-size: 11px;
+}
+
+/* Ajuste fino dos Quadradinhos marcados */
+.pdf-card .area-avaliacao {
+    padding: 10px;
+    margin-top: 10px;
+}
+
+.pdf-card .area-avaliacao h4 {
+    font-size: 12px;
+    margin-bottom: 10px;
+}
+
+.pdf-card .quadrado-maior {
+    width: 44px;
+    height: 44px;
+    padding: 4px;
+    gap: 4px;
+}
+
+.pdf-card .quadrante {
+    border-width: 1.5px;
+}
+
+/* Regra de Ouro: Quebra a página se for o 10º, 19º, 28º card... */
+.quebra-pagina {
+    page-break-before: always;
+    break-before: page;
+}

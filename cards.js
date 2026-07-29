@@ -1,210 +1,276 @@
-$(document).ready(function () {
-    const $listaCards = $('#listaCards');
+/*=========================================================
+    PA-KUA AVALIAÇÕES
+    CARDS.JS V2.0
+=========================================================*/
 
-    // Verifica se estamos na página de exibição dos cards
-    if ($listaCards.length > 0) {
+$(document).ready(function(){
 
-        function carregarCards() {
-            const alunos = JSON.parse(localStorage.getItem('alunosPaKua')) || [];
+const $listaCards = $("#listaCards");
 
-            $listaCards.empty();
+/*=========================================================
+    VERIFICA PÁGINA
+=========================================================*/
+if(!$listaCards.length){
+    return;
+}
 
-            if (alunos.length === 0) {
-                $listaCards.html('<div class="sem-alunos">Nenhum aluno cadastrado ainda.</div>');
-                return;
-            }
+/*=========================================================
+    UTILITÁRIOS
+=========================================================*/
+function obterAlunos(){
+    return JSON.parse(
+        localStorage.getItem("alunosPaKua")
+    ) || [];
+}
 
-            // ATENÇÃO AQUI: O 'index' é obrigatório para o botão funcionar!
-         // Para cada aluno, desenha o card na tela
-            alunos.forEach((aluno, index) => {
-                const statusPagamentoHTML = aluno.pagou
-                    ? '<span class="status-pago pago-sim">PAGO</span>'
-                    : '<span class="status-pago pago-nao">PENDENTE</span>';
+function obterModalidade(){
+    return (
+        localStorage.getItem("modalidadeEscolhida")
+        ||
+        CONFIG.sistema.modalidadePadrao
+    );
+}
 
-                let tiposValidos = [];
-                if (aluno.avalFaixa) tiposValidos.push('<span class="badge-tipo">Faixa</span>');
-                if (aluno.avalDistintivo) tiposValidos.push('<span class="badge-tipo">Distintivo</span>');
-                const tiposHTML = tiposValidos.length > 0 ? tiposValidos.join(' ') : '<span class="badge-tipo">Não especificado</span>';
+/*=========================================================
+    BADGES
+=========================================================*/
+function criarBadges(aluno){
+    let html="";
 
-                const paletaFundo = {
-                    "Branca": "#ffffff", "Amarela": "#fef9e7", "Laranja": "#fdf2e9", "Verde": "#e9f7ef"
-                };
-                const paletaBorda = {
-                    "Branca": "#bdc3c7", "Amarela": "#f1c40f", "Laranja": "#e67e22", "Verde": "#27ae60"
-                };
+    if(CONFIG.cards.mostrarBadges && aluno.avalFaixa){
+        html += `<span class="badge-tipo">Faixa</span>`;
+    }
 
-                const corFundo = paletaFundo[aluno.graduacaoAtual] || "#ffffff";
-                const corBorda = paletaBorda[aluno.graduacaoAtual] || "#bdc3c7";
+    if(CONFIG.cards.mostrarBadges && aluno.avalDistintivo){
+        html += `<span class="badge-tipo">Distintivo</span>`;
+    }
 
-                const quadradosProgressoHTML = Array(8).fill(`
-                        <div class="quadrado-maior">
-                            <input type="checkbox" class="quadrante">
-                            <input type="checkbox" class="quadrante">
-                            <input type="checkbox" class="quadrante">
-                            <input type="checkbox" class="quadrante">
-                        </div>
-                    `).join('');
+    if(html===""){
+        html=`<span class="badge-tipo">Não informado</span>`;
+    }
+    return html;
+}
 
-                const imagemSrc = aluno.foto ? aluno.foto : "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
+/*=========================================================
+    PAGAMENTO
+=========================================================*/
+function criarStatusPagamento(aluno){
+    if(!CONFIG.cards.mostrarPagamento){
+        return "";
+    }
 
-                // AQUI ESTÁ O DESENHO DO CARD COM O TELEFONE INCLUÍDO
-                const cardHTML = `
-                        <div class="card" style="background-color: ${corFundo}; border-left-color: ${corBorda};">
-                            
-                            <div class="card-cabecalho">
-                                <img src="${imagemSrc}" class="foto-aluno" alt="Foto">
-                                <div class="card-titulos">
-                                    <h3>${aluno.nome} ${aluno.sobrenome}</h3>
-                                    <span style="font-size: 13px; color: #7f8c8d;">Idade: ${aluno.idade} anos</span>
-                                </div>
-                                
-                                <div class="acoes-card" style="margin-left: auto; display: flex; flex-direction: column; align-items: flex-end; gap: 15px;">
-                                    ${statusPagamentoHTML}
-                                    <a href="index.html?edit=${index}" class="btn-editar" style="margin-left: 0;">✏️ Editar</a>
-                                </div>
-                            </div>
-                            
-                            <!-- A LINHA DO TELEFONE APARECE AQUI! -->
-                            <p style="margin-top: 5px;"><strong>WhatsApp:</strong> ${aluno.telefone ? aluno.telefone : 'Não preenchido'}</p>
-                            
-                            <p><strong>Recinto:</strong> ${aluno.recinto}</p>
-                            <p><strong>Orientador:</strong> ${aluno.orientador}</p>
-                            <p><strong>Graduação Atual:</strong> ${aluno.graduacaoAtual} (${aluno.tempoFaixa})</p>
-                            <p><strong>Avaliando para:</strong> ${aluno.faixaNova}</p>
-                            <p style="margin-top: 10px;">${tiposHTML}</p>
-                            
-                            <div class="area-quadrantes">
-                                ${quadradosProgressoHTML}
-                            </div>
-                        </div>
-                    `;
+    return aluno.pagou
+    ? `<span class="badge-status pago">✔ Pago</span>`
+    : `<span class="badge-status pendente">⌛ Pendente</span>`;
+}
 
-                $('#listaCards').append(cardHTML);
-            });
+/*=========================================================
+    QUADRANTES DE AVALIAÇÃO
+=========================================================*/
+function criarQuadrantes(aluno,index){
+    let html="";
+
+    if(!aluno.avaliacaoQuadrantes){
+        aluno.avaliacaoQuadrantes = Array(CONFIG.cards.quantidadeQuadrantes * 4).fill(false);
+    }
+
+    let contador=0;
+
+    for(let grupo=0; grupo<CONFIG.cards.quantidadeQuadrantes; grupo++){
+        html+=`<div class="quadrado-maior">`;
+
+        for(let q=0;q<4;q++){
+            const marcado = aluno.avaliacaoQuadrantes[contador] ? "marcado" : "";
+
+            html+=`
+            <span
+            class="quadrante ${marcado}"
+            data-aluno="${index}"
+            data-quadrante="${contador}"
+            >
+            </span>
+            `;
+            contador++;
         }
+        html+=`</div>`;
+    }
+    return html;
+}
 
-        window.limparDados = function () {
-            if (confirm("Tem certeza que deseja apagar todos os alunos cadastrados?")) {
-                localStorage.removeItem('alunosPaKua');
-                carregarCards();
-            }
-        }
+/*=========================================================
+    INFORMAÇÕES
+=========================================================*/
+function criarInformacoes(aluno){
+    return `
+    <div class="info-grid">
+    ${CONFIG.cards.mostrarOrientador ? `
+    <div class="info-item">
+    <span>👤 Orientador</span>
+    <strong>${aluno.orientador || "-"}</strong>
+    </div>` : ""}
 
+    ${CONFIG.cards.mostrarRecinto ? `
+    <div class="info-item">
+    <span>🏫 Recinto</span>
+    <strong>${aluno.recinto || "-"}</strong>
+    </div>` : ""}
+
+    ${CONFIG.cards.mostrarTelefone ? `
+    <div class="info-item">
+    <span>📞 WhatsApp</span>
+    <strong>${aluno.telefone || "-"}</strong>
+    </div>` : ""}
+
+    ${CONFIG.cards.mostrarTempoFaixa ? `
+    <div class="info-item">
+    <span>Tempo</span>
+    <strong>${aluno.tempoFaixa || "-"}</strong>
+    </div>` : ""}
+    </div>
+    `;
+}
+
+/*=========================================================
+    CRIA CARD
+=========================================================*/
+function criarCard(aluno,index){
+
+    const modalidade = obterModalidade();
+    const faixa = CONFIG.faixas[aluno.graduacaoAtual] || CONFIG.faixas.Branca;
+    const faixaNova = CONFIG.faixas[aluno.faixaNova] || CONFIG.faixas.Branca;
+    const imagem = aluno.foto ? aluno.foto : CONFIG.imagens.avatarPadrao;
+
+    return `
+    <div class="card faixa-${aluno.graduacaoAtual}" style="background:${faixa.fundo}; border:2px solid ${faixa.borda};">
+
+        <div class="card-header">
+            <div class="foto-wrapper">
+                <img src="${imagem}" class="foto-aluno" alt="Foto aluno">
+            </div>
+
+            <div class="dados-principais">
+                <h3>${aluno.nome} ${aluno.sobrenome}</h3>
+                <span class="modalidade">${modalidade}</span>
+                ${CONFIG.cards.mostrarIdade ? `<span class="idade">${aluno.idade || "-"} anos</span>` : ""}
+            </div>
+
+            <div class="status">
+                ${criarStatusPagamento(aluno)}
+            </div>
+        </div>
+
+        <div class="faixas">
+            <div class="faixa-box" style="background:${faixa.fundo}; border:2px solid ${faixa.borda};">
+                <small>Faixa Atual</small>
+                <strong>${aluno.graduacaoAtual}</strong>
+            </div>
+
+            <div class="seta">→</div>
+
+            <div class="faixa-box" style="background:${faixaNova.fundo}; border:2px solid ${faixaNova.borda};">
+                <small>Avaliando para</small>
+                <strong>${aluno.faixaNova}</strong>
+            </div>
+        </div>
+
+        ${criarInformacoes(aluno)}
+
+        <div class="tipos-avaliacao">
+            ${criarBadges(aluno)}
+        </div>
+
+        <div class="area-avaliacao">
+            <h4>Ficha de Avaliação</h4>
+            <div class="area-quadrantes">
+                <!-- CORRIGIDO: Passando aluno e index para a função! -->
+                ${criarQuadrantes(aluno, index)}
+            </div>
+        </div>
+
+        <div class="card-footer">
+            <a href="index.html?edit=${index}" class="btn-editar">
+                ✏ Editar Cadastro
+            </a>
+        </div>
+    </div>
+    `;
+}
+
+/*=========================================================
+    RENDERIZAÇÃO
+=========================================================*/
+function carregarCards(){
+    const alunos = obterAlunos();
+    $listaCards.empty();
+
+    if(!alunos.length){
+        $listaCards.html(`
+        <div class="sem-alunos">
+        Nenhum aluno cadastrado ainda.
+        </div>
+        `);
+        return;
+    }
+
+    let html="";
+    alunos.forEach((aluno,index)=>{
+        html += criarCard(aluno,index);
+    });
+
+    $listaCards.html(html);
+}
+
+/*=========================================================
+    LIMPAR DADOS
+=========================================================*/
+window.limparDados=function(){
+    if(confirm("Tem certeza que deseja apagar todos os alunos cadastrados?")){
+        localStorage.removeItem("alunosPaKua");
         carregarCards();
     }
+};
 
-    // ==========================================
-    // LÓGICA PARA GERAR O PDF
-    // ==========================================
-    $('#btnGerarPDF').on('click', function() {
-    const elementoOrigem = document.getElementById('listaCards');
-    const modalidade = localStorage.getItem('modalidadeEscolhida') || 'Pa-Kua';
-
-    // 1. Criar o Título (canto superior esquerdo, fonte menor)
-    const tituloPDF = document.createElement('h2');
-    tituloPDF.innerText = `Avaliação - ${modalidade}`;
-    tituloPDF.style.textAlign = 'left'; // Canto esquerdo
-    tituloPDF.style.fontSize = '14px';  // Tamanho menor
-    tituloPDF.style.color = '#333';
-    tituloPDF.style.marginBottom = '15px';
-    tituloPDF.style.fontWeight = 'bold';
-
-    // 2. Preparar os cards para 3 colunas usando Flexbox
-    // Salva os estilos originais para podermos desfazer depois sem recarregar a página
-    const displayOriginal = elementoOrigem.style.display;
-    const flexWrapOriginal = elementoOrigem.style.flexWrap;
-    const gapOriginal = elementoOrigem.style.gap;
-
-    // Aplica o formato perfeito de 3 colunas para o PDF
-    elementoOrigem.style.display = 'flex';
-    elementoOrigem.style.flexWrap = 'wrap';
-    elementoOrigem.style.gap = '2%'; // Distância exata para caberem 3 itens
-
-    const cards = Array.from(elementoOrigem.children);
-    const estilosOriginaisCards = [];
-    const quebrasDePagina = [];
-
-    cards.forEach((card, index) => {
-        // Salva a largura original do card
-        estilosOriginaisCards.push(card.style.cssText);
-
-        // Força o card a ocupar quase 1/3 do espaço (32% + margem de segurança)
-        card.style.width = '32%'; 
-        card.style.pageBreakInside = 'avoid'; // Evita que o card seja cortado no meio
-        card.style.marginBottom = '15px';
-
-        // MÁGICA DO LIMITE: A cada 9 cards, inserimos um "cortador" de página
-        if ((index + 1) % 9 === 0 && index !== cards.length - 1) {
-            const breakElement = document.createElement('div');
-            breakElement.classList.add('html2pdf__page-break'); // Classe nativa do html2pdf
-            breakElement.style.width = '100%'; // Ocupa a linha toda para forçar a quebra
-            breakElement.style.height = '0';
-            breakElement.style.margin = '0';
-            
-            // Insere a quebra invisível logo após o 9º, 18º, 27º card...
-            card.parentNode.insertBefore(breakElement, card.nextSibling);
-            quebrasDePagina.push(breakElement);
-        }
-    });
-
-    // 3. Criar uma "caixa" invisível para agrupar o título e a lista de cards
-    const wrapperPDF = document.createElement('div');
-    elementoOrigem.parentNode.insertBefore(wrapperPDF, elementoOrigem);
-    wrapperPDF.appendChild(tituloPDF);
-    wrapperPDF.appendChild(elementoOrigem);
-
-    // Configurações do PDF
-    const nomeArquivo = `Avaliacoes_${modalidade.replace(/\s+/g, '_')}.pdf`;
-    const opcoesPDF = {
-        margin:       10, 
-        filename:     nomeArquivo, 
-        image:        { type: 'jpeg', quality: 0.98 }, 
-        html2canvas:  { scale: 2, useCORS: true }, 
-        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' } 
-    };
-
-    const $botao = $(this);
-    const textoOriginal = $botao.text();
-    $botao.text('⏳ Gerando PDF...').prop('disabled', true);
-
-    // 4. Gerar o PDF e Limpar o Código em seguida
-    html2pdf().set(opcoesPDF).from(wrapperPDF).save().then(function() {
-        $botao.text(textoOriginal).prop('disabled', false);
-        
-        // Desfazer o Wrapper (devolve a lista para o pai original e remove o título)
-        wrapperPDF.parentNode.insertBefore(elementoOrigem, wrapperPDF);
-        wrapperPDF.remove();
-
-        // Restaurar estilos originais do container dos cards
-        elementoOrigem.style.display = displayOriginal;
-        elementoOrigem.style.flexWrap = flexWrapOriginal;
-        elementoOrigem.style.gap = gapOriginal;
-
-        // Restaurar estilos originais de cada card individual
-        cards.forEach((card, index) => {
-            card.style.cssText = estilosOriginaisCards[index];
-        });
-
-        // Remover todas as quebras de página da tela do usuário
-        quebrasDePagina.forEach(el => el.remove());
-    });
-});
-});
-
-document.addEventListener("DOMContentLoaded", function() {
-    // Busca a modalidade salva pelo EvalPKapp.js
-    const modalidade = localStorage.getItem('modalidadeEscolhida');
+/*=========================================================
+    EVENTOS QUADRANTES (AGORA SALVA NA MEMÓRIA!)
+=========================================================*/
+$(document).on("click", ".quadrante", function(e){
+    e.preventDefault();
+    const $this = $(this);
     
-    if (modalidade) {
-        // Tenta encontrar o <h1> da página de cards
-        const tituloElemento = document.getElementById('tituloPagina');
-        
-        // Se encontrar o H1, altera o texto dele
-        if (tituloElemento) {
-            tituloElemento.innerText = 'Avaliação - ' + modalidade;
+    // 1. Muda a cor na tela
+    $this.toggleClass("marcado");
+    
+    // 2. Descobre quem é o aluno e qual quadrante foi clicado
+    const alunoIndex = $this.data("aluno");
+    const quadranteIndex = $this.data("quadrante");
+    const estaMarcado = $this.hasClass("marcado");
+
+    // 3. Salva a nova informação no LocalStorage para não perder ao recarregar a página
+    const alunos = obterAlunos();
+    if(alunos[alunoIndex]){
+        if(!alunos[alunoIndex].avaliacaoQuadrantes){
+            alunos[alunoIndex].avaliacaoQuadrantes = Array(CONFIG.cards.quantidadeQuadrantes * 4).fill(false);
         }
-        
-        // Altera o nome da aba do navegador
-        document.title = 'Cards - ' + modalidade;
+        alunos[alunoIndex].avaliacaoQuadrantes[quadranteIndex] = estaMarcado;
+        localStorage.setItem("alunosPaKua", JSON.stringify(alunos));
     }
+});
+
+/*=========================================================
+    TÍTULO
+=========================================================*/
+const modalidade = localStorage.getItem("modalidadeEscolhida");
+if(modalidade){
+    const titulo = document.getElementById("tituloPagina");
+    if(titulo){
+        titulo.innerText = "Avaliação - " + modalidade;
+    }
+    document.title = "Cards - " + modalidade;
+}
+
+/*=========================================================
+    INICIALIZA
+=========================================================*/
+carregarCards();
+
 });

@@ -9,62 +9,72 @@
 </head>
 
 <body>
+    <!-- CABEÇALHO -->
+    <header class="header-avaliacao">
+        <div class="marca">
+            <!-- Futuramente colocar aqui: logo do ideograma Pa-Kua -->
+            <div class="logo-placeholder">☯</div>
+            <div>
+                <h1>PA-KUA</h1>
+                <span>Sistema de Avaliação</span>
+            </div>
+        </div>
 
-    <div class="container">
-        
-        <div class="header-avaliacao">
-    
-
-        
-          <h2>Cadastro de Avaliação - Pa-Kua</h2>
-          <select id="modalidade" name="modalidade" class="select-modalidade" required>
-            <option value="" disabled selected>Selecione a modalidade...</option>
-            <option value="modalidade1">Arte Marcial</option>
-            <option value="modalidade2">Arqueria</option>
-            <option value="modalidade3">Armas de Corte</option>
-            <option value="modalidade4">Acrobacia</option>
-            <option value="modalidade5">Pa-Kua Ritmo</option>
-            <option value="modalidade6">Cosmodinâmica</option>
-            <option value="modalidade7">Sintonia</option>
-            <option value="modalidade8">Pa-Kua Chi</option>
-            
+        <!-- Seletor de Modalidade (conectado ao formulário pelo atributo 'form') -->
+        <select id="modalidade" class="select-modalidade" required form="formCadastro">
+            <option disabled selected>Modalidade</option>
+            <option>Arte Marcial</option>
+            <option>Arqueria</option>
+            <option>Armas de Corte</option>
+            <option>Acrobacia</option>
+            <option>Pa-Kua Ritmo</option>
+            <option>Cosmodinâmica</option>
+            <option>Sintonia</option>
+            <option>Pa-Kua Chi</option>
         </select>
-    
+    </header>
 
-        </div>
-       
+    <!-- TÍTULO DA PÁGINA -->
+    <section class="titulo-formulario">
+        <h2>Cadastro de Aluno</h2>
+        <p>Preencha as informações para iniciar uma nova avaliação.</p>
+    </section>
 
+    <!-- ÁREA DO FORMULÁRIO -->
+    <div class="container">
         <form id="formCadastro">
-          <div class="form-group">
-            <label>Foto do Aluno:</label>
             
-            <!-- 1. O botão original fica escondido (display: none) -->
-            <input type="file" id="fotoAluno" accept="image/*" style="display: none;">
-            
-            <!-- 2. Este "label" é o nosso novo botão bonito. O 'for' liga ele ao input escondido -->
-            <label for="fotoAluno" class="btn-upload" id="labelFoto">
-                📷 Imagem / Foto
-            </label>
-        </div>
             <div class="form-group">
+                <label>Foto do Aluno</label>
+                <input type="file" id="fotoAluno" accept="image/*" hidden>
+                <label for="fotoAluno" class="btn-upload" id="labelFoto">
+                    <span class="icone-upload">📷</span>
+                    <strong>Adicionar Foto</strong>
+                    <small>Clique para selecionar</small>
+                </label>
+            </div>
+            
+            <div class="form-row">
                 <label for="nome">Nome:</label>
                 <input type="text" id="nome" required>
             </div>
-            <div class="form-group">
+            
+            <div class="form-row">
                 <label for="sobrenome">Sobrenome:</label>
                 <input type="text" id="sobrenome" required>
             </div>
-           
-           
-            <div class="form-group">
+            
+            <div class="form-row">
                 <label for="orientador">Orientador(a):</label>
                 <input type="text" id="orientador" required>
             </div>
-            <div class="form-group">
+            
+            <div class="form-row">
                 <label for="recinto">Recinto (Escola/Local):</label>
                 <input type="text" id="recinto" placeholder="Ex: Central, Juvevê, etc." required>
             </div>
-            <div class="form-group">
+            
+            <div class="form-row">
                 <label for="graduacaoAtual">Graduação/Faixa Atual:</label>
                 <select id="graduacaoAtual" required>
                     <option value="" disabled selected>Selecione a faixa...</option>
@@ -81,7 +91,7 @@
                 </select>
             </div>
             
-            <div class="form-group">
+            <div class="form-row">
                 <label for="faixaNova">Avaliando para a Faixa/Nível:</label>
                 <select id="faixaNova" required>
                     <option value="" disabled selected>Selecione a faixa...</option>
@@ -91,22 +101,22 @@
                     <option value="Cinza">Cinza</option>
                 </select>
             </div>
-             <div class="form-row">
-            <div class="form-group">
-                <label for="idade">Idade:</label>
-                <input type="number" id="idade" min="0" required>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="idade">Idade:</label>
+                    <input type="number" id="idade" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="tempoFaixa">Tempo na Faixa:</label>
+                    <input type="text" id="tempoFaixa" placeholder="Ex: 6 meses" required>
+                </div>
+                <div class="form-group">
+                    <label for="telefone">Telefone / WhatsApp:</label>
+                    <input type="tel" id="telefone" placeholder="(XX) 9XXXX-XXXX" required>
+                </div>
             </div>
-           
-          
-            <div class="form-group">
-                <label for="tempoFaixa">Tempo na Faixa:</label>
-                <input type="text" id="tempoFaixa" placeholder="Ex: 6 meses" required>
-            </div>
-             <div class="form-group">
-                <label for="telefone">Telefone / WhatsApp:</label>
-                <input type="tel" id="telefone" placeholder="(XX) 9XXXX-XXXX" required>
-            </div>
-        </div>
+            
             <div class="form-group">
                 <label>Tipo de Avaliação:</label>
                 <div class="checkbox-group">
@@ -114,22 +124,32 @@
                     <label class="checkbox-inline"><input type="checkbox" id="avalDistintivo"> Distintivo</label>
                 </div>
             </div>
+            
             <div class="form-group">
                 <div class="checkbox-group" style="margin-top: 15px;">
-                    <label class="checkbox-inline" style="font-weight: bold;"><input type="checkbox" id="pagou"> Pagou a
-                        avaliação?</label>
+                    <label class="checkbox-inline" style="font-weight: bold;">
+                        <input type="checkbox" id="pagou"> Avaliação Paga
+                    </label>
                 </div>
             </div>
 
-            <button type="submit">Cadastrar Aluno</button>
+            <button type="submit">Cadastrar Avaliação</button>
             <div id="mensagemSucesso">Aluno cadastrado com sucesso!</div>
         </form>
     </div>
-    <h1></h1>
 
-    <a href="cards.html" class="btn-flutuante">Ver Cards ➔</a>
+    <!-- BOTÃO FLUTUANTE -->
+    <a href="cards.html" class="btn-flutuante">📋 Avaliações</a>
+
+    <!-- SCRIPTS -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="config.js"></script> <!-- Adicionado o config.js aqui também -->
     <script src="EvalPKapp.js"></script>
-</body>
 
+    <!-- RODAPÉ -->
+    <footer>
+        Sistema de Avaliação Pa-Kua © 2026
+    </footer>
+
+</body>
 </html>

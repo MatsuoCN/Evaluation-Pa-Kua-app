@@ -1,264 +1,301 @@
+/*======================================================
+ PA-KUA • Sistema de Avaliação (Cadastro)
+======================================================*/
+
+:root {
+    --primary: #A50000;
+    --primary-dark: #630000;
+    --background: #0F1115;
+    --background2: #1A1D24;
+    --card: #FFFFFF;
+    --border: #E7EAF0;
+    --text: #f1f1f1;
+    --text-light: #6B7280;
+    --success: #00B16A;
+    --radius: 18px;
+    --transition: .30s;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
-    padding: 20px;
-    color: #333;
-    margin-bottom: 80px;
-    /* Espaço para o botão não cobrir conteúdo */
+    font-family: 'Inter', sans-serif;
+    background: radial-gradient(circle at top, #6d0000 0%, #2d0000 35%, #111317 100%);
+    min-height: 100vh;
+    padding: 50px 20px;
+    color: var(--text);
 }
 
+/*======================================================
+ CONTAINER PRINCIPAL
+======================================================*/
 .container {
-    max-width: 650px;
+    max-width: 650px; /* Reduzimos a largura de 850px para 650px */
     margin: 0 auto;
-    background: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background: var(--card);
+    border-radius: 20px;
+    padding: 30px; /* Reduzimos o espaço interno (era 40px) */
+    box-shadow: 0 20px 70px rgba(0,0,0,.30);
+    animation: fadeUp .8s ease-out;
+    backdrop-filter: blur(20px);
 }
 
-h2 {
+/*======================================================
+ CABEÇALHO (LOGO E MODALIDADE)
+======================================================*/
+.header-avaliacao {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 30px;
+    margin-bottom: 35px;
+    border-bottom: 1px solid #ECECEC;
+    flex-wrap: wrap; /* Para telas menores */
+    gap: 20px;
+}
+
+.marca {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.logo-placeholder {
+    width: 55px;
+    height: 55px;
+    background: var(--primary);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    box-shadow: 0 5px 15px rgba(165,0,0,0.3);
+}
+
+.marca h1 {
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: #eeeeee;
+    line-height: 1.1;
+}
+
+.marca span {
+    color: #777;
+    font-size: 13px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.select-modalidade {
+    width: 260px;
+    height: 52px;
+    padding: 0 20px;
+    border-radius: 12px;
+    border: 2px solid var(--border);
+    background: white;
+    font-size: 15px;
+    transition: var(--transition);
+    cursor: pointer;
+    color: #333;
+    font-weight: 600;
+}
+
+/*======================================================
+ TÍTULO DO FORMULÁRIO
+======================================================*/
+.titulo-formulario {
     text-align: center;
-    color: #2c3e50;
-    margin-bottom: 20px;
+    margin-bottom: 35px;
+}
+
+.titulo-formulario h2 {
+    font-size: 32px;
+    font-weight: 700;
+    color: #e5e5e5;
+    margin-bottom: 8px;
+}
+
+.titulo-formulario p {
+    color: var(--text-light);
+    font-size: 15px;
+}
+
+/*======================================================
+ FORMULÁRIO
+======================================================*/
+.form-row {
+    margin-bottom: 14px;
+}
+
+/* Garante que os campos de Idade, Tempo e Telefone fiquem lado a lado */
+.form-row:has(.form-group) {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
 }
 
 .form-group {
-    margin-bottom: 15px;
+    flex: 1;
+    min-width: 150px;
+    margin-bottom: 14px;
 }
 
-.form-group label {
+.form-group label,
+.form-row label {
     display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
+    margin-bottom: 5px; /* Aproxima bastante a label do campo */
+    font-size: 13px;
+    font-weight: 700;
+    color: #222222;
+    letter-spacing: .5px;
 }
 
-.form-group input[type="text"],
-.form-group input[type="number"],
-.form-group input[type="tel"] {
+/* Deixa os campos ligeiramente mais finos para um visual mais limpo */
+input[type=text],
+input[type=number],
+input[type=tel],
+select {
     width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-    background-color: #fff;
-    font-family: Arial, sans-serif;
+    height: 42px; 
+    padding: 0 15px;
+    border-radius: 10px;
+    border: 2px solid var(--border);
     font-size: 14px;
-}
-
-.form-group select {
-    width: 100%;
-    padding: 12px 15px;
-    border: 2px solid #ccc;
-    border-radius: 6px;
-    box-sizing: border-box;
-    background-color: #fff;
-    font-family: Arial, sans-serif;
-    font-size: 15px;
-    font-weight: bold;
+    transition: var(--transition);
+    background: white;
+    font-family: 'Inter', sans-serif;
     color: #333;
-    cursor: pointer;
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-    background-repeat: no-repeat;
-    background-position: right 15px center;
-    background-size: 16px;
-    transition: all 0.3s ease;
 }
 
-.form-group select:hover {
-    border-color: #888;
-    background-color: #fafafa;
-}
-
-.form-group select:focus {
+input:focus,
+select:focus {
     outline: none;
-    border-color: #e67e22;
-    box-shadow: 0 0 8px rgba(230, 126, 34, 0.3);
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(165,0,0,.10);
+    transform: scale(1.01);
 }
 
-.checkbox-group {
+/* Botão Upload Foto - Mais compacto e com itens alinhados horizontalmente */
+.btn-upload {
+    width: 50%;
+    height: 60px; /* Reduzido significativamente */
+    border: 2px dashed #CCC;
+    border-radius: 10px;
     display: flex;
-    gap: 15px;
     align-items: center;
-    margin-top: 5px;
-}
-
-.checkbox-inline {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    font-weight: normal;
+    justify-content: center;
+    flex-direction: row; /* Coloca o ícone e o texto lado a lado */
+    gap: 10px;
+    background: #fafafa;
+    color: #777;
+    font-weight: 600;
     cursor: pointer;
+    transition: var(--transition);
 }
 
-.checkbox-inline input {
-    cursor: pointer;
-    width: 16px;
-    height: 16px;
+.btn-upload .icone-upload {
+    font-size: 20px;
 }
 
-button[type="submit"] {
-    width: 100%;
-    padding: 12px;
-    background-color: #670303;
-    color: white;
+.btn-upload small {
+    font-weight: 400;
+    font-size: 12px;
+}
+
+.btn-upload:hover {
+    background: white;
+    border-color: var(--primary);
+    color: var(--primary);
+    transform: translateY(-2px);
+}
+
+/* ... mantenha o código das Checkboxes intacto aqui ... */
+
+/* Botão Submit - Menor e mais proporcional */
+button[type=submit] {
+    width: 50%;
+    height: 46px; /* Mais fino */
     border: none;
-    border-radius: 4px;
-    font-size: 16px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #670000, #C60000);
+    color: white;
+    font-size: 15px;
+    font-weight: 700;
     cursor: pointer;
-    font-weight: bold;
+    transition: var(--transition);
+    box-shadow: 0 10px 20px rgba(166,0,0,.25);
     margin-top: 10px;
 }
 
-button[type="submit"]:hover {
-    background-color: #ff2b2b;
+button[type=submit]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 30px rgba(166,0,0,.35);
+}
+
+button[type=submit]:active {
+    transform: scale(.98);
 }
 
 #mensagemSucesso {
     display: none;
-    background-color: #2ecc71;
+    margin-top: 25px;
+    padding: 16px;
+    border-radius: 14px;
+    background: var(--success);
     color: white;
-    padding: 10px;
+    font-weight: 700;
     text-align: center;
-    border-radius: 4px;
-    margin-top: 15px;
-    font-weight: bold;
+    animation: fadeUp .5s;
 }
 
-/* Estilo do Botão Flutuante (Fixo no canto inferior direito) */
+/*======================================================
+ BOTÃO FLUTUANTE & RODAPÉ
+======================================================*/
 .btn-flutuante {
     position: fixed;
-    bottom: 30px;
-    right: 30px;
-    background-color: #2c3e50;
+    bottom: 35px;
+    right: 35px;
+    padding: 18px 28px;
+    border-radius: 60px;
+    background: linear-gradient(135deg, #111, #333);
     color: white;
-    padding: 15px 25px;
-    border-radius: 50px;
-    /* Deixa o botão arredondado */
     text-decoration: none;
-    font-weight: bold;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    /* Sombra para dar efeito 3D */
-    transition: all 0.3s ease;
-    z-index: 1000;
-    /* Garante que fique por cima de tudo */
+    font-weight: 700;
+    box-shadow: 0 15px 35px rgba(0,0,0,.35);
+    transition: var(--transition);
+    z-index: 100;
 }
 
 .btn-flutuante:hover {
-    background-color: #1a252f;
-    transform: translateY(-3px);
-    /* Faz o botão subir um pouquinho ao passar o mouse */
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(0,0,0,.5);
 }
 
-.btn-editar {
-    margin-left: auto;
-    /* Empurra o botão para a extrema direita */
-    background-color: #f39c12;
-    color: white;
-    text-decoration: none;
-    padding: 6px 10px;
-    border-radius: 4px;
-    font-size: 1px;
-    font-weight: bold;
-    transition: background 0.2s;
-}
-
-.btn-editar:hover {
-    background-color: #d68910;
-}
-
-.form-row {
-    display: flex;
-    gap: 15px; /* Espaço entre os campos */
-    margin-bottom: 15px; /* Espaço para o campo de baixo */
-}
-
-/* Faz com que os campos dentro da linha dividam o espaço por igual */
-.form-row .form-group {
-    flex: 1;
-    margin-bottom: 0; /* Remove a margem padrão para alinhar perfeitamente */
-}
-
-/* Regra para Celulares: Se a tela for pequena, empilha os campos novamente */
-@media (max-width: 600px) {
-    .form-row {
-        flex-direction: column;
-        gap: 0;
-    }
-    .form-row .form-group {
-        margin-bottom: 15px;
-    }
-}
-
-.btn-upload {
-    display: block;
-    background-color: #510000; /* Cinza escuro elegante */
-    color: white;
-    padding: 12px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
+footer {
     text-align: center;
-    transition: background 0.3s, transform 0.1s;
-    box-sizing: border-box;
-    width: 30%;
+    margin-top: 40px;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 13px;
+    letter-spacing: 1px;
 }
 
-.btn-upload:hover {
-    background-color: #2c3e50; /* Fica um pouco mais escuro ao passar o mouse */
-}
-
-.btn-upload:active {
-    transform: scale(0.98); /* Efeitinho de "apertar" quando clica */
-}
-
-/* Container que mantém o título e o select alinhados */
-.header-avaliacao {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 20px; /* Espaço entre o cabeçalho e o botão abaixo */
-}
-
-/* Estilo principal do select alinhado com os inputs do formulário */
-.select-modalidade {
-    /* Espaçamento e Fontes iguais aos inputs de texto */
-    padding: 10px 35px 10px 10px; /* 35px de espaço na direita para não encostar na seta */
-    font-family: Arial, sans-serif;
-    font-size: 14px;
-    color: #333;
-
-    /* Fundo e Bordas idênticos aos inputs */
-    background-color: #fff;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-
-    /* Seta customizada igual à dos outros selects do seu formulário */
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-    background-repeat: no-repeat;
-    background-position: right 10px center;
-    background-size: 16px;
-
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-/* Efeito idêntico aos do form quando passa o mouse */
-.select-modalidade:hover {
-    border-color: #888;
-    background-color: #fafafa;
-}
-
-/* Efeito idêntico aos do form quando clica (Brilho Laranja) */
-.select-modalidade:focus {
-    outline: none;
-    border-color: #e67e22;
-    box-shadow: 0 0 8px rgba(230, 126, 34, 0.3);
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
