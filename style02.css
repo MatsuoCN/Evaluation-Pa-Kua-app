@@ -520,7 +520,7 @@ body {
     display: block;
     width: 100%;
     text-align: center;
-    background: #f1f5f9;
+    background: #ffa340;
     color: #475569;
     padding: 12px;
     border-radius: 12px;
@@ -643,4 +643,17 @@ img { max-width: 100%; }
 
 .pdf-mode::before, .pdf-mode::after {
     display: none !important;
+}
+
+/* Alinhamento do título da página de Cards */
+.page-title {
+    max-width: 1450px; 
+    margin: 0 auto; 
+    padding: 20px; 
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.page-title h2 {
+    margin-bottom: 5px; /* Dá um pequeno espaço entre o título e o subtítulo */
 }

@@ -1,110 +1,149 @@
 /*====================================================
     PA-KUA AVALIAÇÕES
-    PDF.CSS - EXCLUSIVO PARA O 3x3
+    PDF.CSS - EXCLUSIVO PARA O 3x3 COMPACTO
 ====================================================*/
 
-.pdf-container {
-    font-family: 'Inter', sans-serif;
+/*=========================================================
+    ESTILO PRINCIPAL DOS CARDS NO PDF
+=========================================================*/
+.card-pdf-compacto {
+    /* As regras de background e border foram removidas para herdar as cores do HTML */
+    border-radius: 8px !important;
+    padding: 8px !important;
+    box-shadow: none !important;
+    font-size: 9px !important;
+    font-family: 'Inter', sans-serif !important;
+    
+    /* Bloqueia o corte do card no meio da folha */
+    page-break-inside: avoid !important; 
+    break-inside: avoid !important;
 }
 
-/* Oculta os itens nativos de tela no card impresso */
-.pdf-card .card-footer {
+/* Oculta botões e rodapé desnecessários no PDF */
+.card-pdf-compacto .card-footer,
+.card-pdf-compacto .btn-editar {
     display: none !important;
 }
 
-.pdf-card {
-    background-color: #ffffff !important;
-    border: 2px solid #e5e7eb !important;
-    border-radius: 12px !important;
-    padding: 15px !important;
-    box-shadow: none !important;
-    transform: none !important;
-    animation: none !important;
-    page-break-inside: avoid;
-    break-inside: avoid;
+/*=========================================================
+    CABEÇALHO E FOTO
+=========================================================*/
+.card-pdf-compacto .card-header {
+    padding-bottom: 6px !important;
+    margin-bottom: 6px !important;
+    gap: 6px !important;
 }
 
-/* Redução para caber as 3 linhas no A4 */
-.pdf-card .card-header {
-    margin-bottom: 10px;
-    padding-bottom: 10px;
+.card-pdf-compacto .foto-wrapper {
+    width: 32px !important;
+    height: 32px !important;
+    border-width: 1px !important;
 }
 
-.pdf-card .foto-wrapper {
-    width: 55px !important;
-    height: 55px !important;
+.card-pdf-compacto .dados-principais h3 {
+    font-size: 10px !important;
+    margin: 0 !important;
 }
 
-.pdf-card .dados-principais h3 {
-    font-size: 16px !important;
+.card-pdf-compacto .modalidade, 
+.card-pdf-compacto .idade {
+    font-size: 8px !important;
+    margin: 0 !important;
 }
 
-.pdf-card .modalidade, 
-.pdf-card .idade {
-    font-size: 11px !important;
+.card-pdf-compacto .badge-status {
+    padding: 2px 5px !important;
+    font-size: 7px !important;
 }
 
-/* Ajustes da Faixa */
-.pdf-card .faixas {
-    margin: 10px 0;
-    gap: 15px;
+/*=========================================================
+    ÁREA DE FAIXAS E INFORMAÇÕES
+=========================================================*/
+.card-pdf-compacto .faixas {
+    margin: 0 0 6px 0 !important;
+    gap: 6px !important;
 }
 
-.pdf-card .faixa-box {
-    padding: 10px;
-    min-width: 90px;
+.card-pdf-compacto .faixa-box {
+    padding: 4px !important;
+    min-width: 50px !important;
+    border-radius: 6px !important;
 }
 
-.pdf-card .faixa-box small {
-    font-size: 9px;
+.card-pdf-compacto .faixa-box small {
+    font-size: 7px !important;
+    margin-bottom: 2px !important;
 }
 
-.pdf-card .faixa-box strong {
-    font-size: 13px;
+.card-pdf-compacto .faixa-box strong {
+    font-size: 9px !important;
 }
 
-/* Grade de informações (Telefone, etc) */
-.pdf-card .info-grid {
-    gap: 8px;
-    margin-bottom: 10px;
+.card-pdf-compacto .seta {
+    font-size: 10px !important;
 }
 
-.pdf-card .info-item {
-    padding: 8px;
+.card-pdf-compacto .info-grid {
+    gap: 4px !important;
+    margin-bottom: 6px !important;
 }
 
-.pdf-card .info-item span {
-    font-size: 10px;
+.card-pdf-compacto .info-item {
+    padding: 4px !important;
+    border-radius: 4px !important;
 }
 
-.pdf-card .info-item strong {
-    font-size: 11px;
+.card-pdf-compacto .info-item span {
+    font-size: 7px !important;
 }
 
-/* Ajuste fino dos Quadradinhos marcados */
-.pdf-card .area-avaliacao {
-    padding: 10px;
-    margin-top: 10px;
+.card-pdf-compacto .info-item strong {
+    font-size: 8px !important;
 }
 
-.pdf-card .area-avaliacao h4 {
-    font-size: 12px;
-    margin-bottom: 10px;
+.card-pdf-compacto .tipos-avaliacao {
+    margin-bottom: 6px !important;
+    gap: 4px !important;
 }
 
-.pdf-card .quadrado-maior {
-    width: 44px;
-    height: 44px;
-    padding: 4px;
-    gap: 4px;
+/*=========================================================
+    FICHA DE AVALIAÇÃO (OS 10 QUADRANTES)
+=========================================================*/
+.card-pdf-compacto .area-avaliacao {
+    padding: 6px !important;
+    border-radius: 6px !important;
 }
 
-.pdf-card .quadrante {
-    border-width: 1.5px;
+.card-pdf-compacto .area-avaliacao h4 {
+    font-size: 8px !important;
+    margin-bottom: 4px !important;
 }
 
-/* Regra de Ouro: Quebra a página se for o 10º, 19º, 28º card... */
+.card-pdf-compacto .area-quadrantes {
+    gap: 3px !important;
+}
+
+.card-pdf-compacto .quadrado-maior {
+    width: 24px !important;
+    height: 24px !important;
+    padding: 1px !important;
+    gap: 1px !important;
+    border-radius: 3px !important;
+}
+
+.card-pdf-compacto .quadrante {
+    width: 7px !important;
+    height: 7px !important;
+    border-width: 1px !important;
+    border-radius: 1px !important;
+}
+
+/*=========================================================
+    CONTROLE DE PÁGINA
+=========================================================*/
+/* Regra de quebra de página a cada 9 itens */
 .quebra-pagina {
-    page-break-before: always;
-    break-before: page;
+    page-break-before: always !important;
+    break-before: page !important;
 }
+

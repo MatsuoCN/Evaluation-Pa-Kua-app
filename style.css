@@ -187,7 +187,7 @@ select:focus {
 
 /* Botão Upload Foto - Mais compacto e com itens alinhados horizontalmente */
 .btn-upload {
-    width: 50%;
+    width: 60%;
     height: 60px; /* Reduzido significativamente */
     border: 2px dashed #CCC;
     border-radius: 10px;
@@ -223,7 +223,7 @@ select:focus {
 
 /* Botão Submit - Menor e mais proporcional */
 button[type=submit] {
-    width: 50%;
+    width: 60%;
     height: 46px; /* Mais fino */
     border: none;
     border-radius: 10px;

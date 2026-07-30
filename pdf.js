@@ -1,6 +1,6 @@
 /*=========================================================
     PA-KUA AVALIAÇÕES
-    PDF.JS - GERADOR 3x3 DEFINITIVO (ENCAIXE PERFEITO A4)
+    PDF.JS - GERADOR 3x3 (FLEXBOX E PAGEBREAK NATIVO)
 =========================================================*/
 
 $(function(){
@@ -15,105 +15,120 @@ $(function(){
             return;
         }
 
-        // 1. Feedback visual no botão
         const $botao = $(this);
         const textoOriginal = $botao.html();
-        $botao.prop("disabled", true).html("⏳ Montando PDF...");
+        $botao.prop("disabled", true).html("⏳ Montando Arquivo...");
 
         const modalidade = localStorage.getItem("modalidadeEscolhida") || "Pa-Kua";
 
-        // 2. A CAIXA INVISÍVEL
-        const hideBox = document.createElement("div");
-        hideBox.style.position = "fixed";
-        hideBox.style.top = "0";
-        hideBox.style.left = "0";
-        hideBox.style.width = "0";
-        hideBox.style.height = "0";
-        hideBox.style.overflow = "hidden";
-        hideBox.style.zIndex = "-9999";
+        // 1. ESCONDER A INTERFACE ORIGINAL COM SEGURANÇA
+        const elementosOcultos = [];
+        $("body > *").each(function() {
+            if (this.tagName !== "SCRIPT" && this.tagName !== "STYLE") {
+                elementosOcultos.push({ 
+                    elemento: this, 
+                    display: $(this).css("display") 
+                });
+                $(this).hide(); 
+            }
+        });
 
-        // 3. CONTAINER DO PDF (Ajustado para 794px, que é a largura exata padrão de um A4 em pixels a 96 DPI)
+        // 2. CRIAR A FOLHA A4 PRINCIPAL
         const wrapper = document.createElement("div");
-        wrapper.style.width = "794px"; 
+        wrapper.id = "pdf-temp-wrapper";
+        wrapper.style.width = "794px";
         wrapper.style.backgroundColor = "#ffffff";
-        wrapper.style.padding = "15px";
+        wrapper.style.padding = "20px";
+        wrapper.style.margin = "0"; 
         wrapper.style.boxSizing = "border-box";
-
-        // Título compacto
+        
         const titulo = document.createElement("h1");
         titulo.innerText = "Avaliação - " + modalidade;
         titulo.style.textAlign = "center";
         titulo.style.fontFamily = "sans-serif";
         titulo.style.color = "#2c3e50";
-        titulo.style.marginBottom = "15px";
-        titulo.style.fontSize = "20px";
+        titulo.style.marginBottom = "20px";
+        titulo.style.fontSize = "22px";
         wrapper.appendChild(titulo);
 
-        // Grid 3x3 com espaçamento seguro para A4
-        const grid = document.createElement("div");
-        grid.className = "pdf-grid";
-        grid.style.display = "grid";
-        grid.style.gridTemplateColumns = "repeat(3, 1fr)";
-        grid.style.gap = "10px"; 
+        // 3. TROCAMOS GRID POR FLEXBOX (Evita colapso e cortes na imagem)
+        const flexContainer = document.createElement("div");
+        flexContainer.style.display = "flex";
+        flexContainer.style.flexWrap = "wrap";
+        flexContainer.style.gap = "10px";
+        flexContainer.style.justifyContent = "flex-start";
 
-        // Clona os cards e aplica uma classe de redução de escala para o PDF
         cards.forEach((card, index) => {
             const clone = card.cloneNode(true);
-            clone.classList.add("pdf-card-ajustado");
+            clone.classList.add("card-pdf-compacto");
             
-            // Trava os estilos
+            // Força a largura para 3 por linha no flexbox (33.33% menos o espaço do gap)
+            clone.style.width = "calc(33.333% - 7px)"; 
             clone.style.animation = "none";
             clone.style.transition = "none";
             clone.style.transform = "none";
             clone.style.opacity = "1";
             clone.style.margin = "0";
-            clone.style.padding = "10px"; // Reduz o padding interno do card no PDF
+            clone.style.boxSizing = "border-box";
             
-            // Quebra de página a cada 9 alunos
+            // Adiciona a classe de quebra a cada 9 cartões
             if (index > 0 && index % 9 === 0) {
-                clone.classList.add("quebra-pagina");
+                clone.classList.add("quebra-pagina-pdf");
             }
             
-            grid.appendChild(clone);
+            flexContainer.appendChild(clone);
         });
 
-        wrapper.appendChild(grid);
-        hideBox.appendChild(wrapper);
-        document.body.appendChild(hideBox);
+        wrapper.appendChild(flexContainer);
+        document.body.appendChild(wrapper);
 
-        // 4. OPÇÕES DO PDF (Sincronizadas com 794px)
-        const opt = {
-            margin: 5,
-            filename: `Avaliacoes_${modalidade}.pdf`,
-            image: { type: "jpeg", quality: 1 },
-            html2canvas: { 
-                scale: 2, 
-                useCORS: true, 
-                backgroundColor: "#ffffff",
-                windowWidth: 794 // Sincronizado perfeitamente com a largura da folha A4
-            },
-            jsPDF: { 
-                unit: "mm", 
-                format: "a4", 
-                orientation: "portrait" 
-            }
-        };
+        // Zera o scroll da tela real
+        window.scrollTo(0, 0);
 
-        // 5. GERAÇÃO
-        html2pdf()
-            .set(opt)
-            .from(wrapper)
-            .save()
-            .then(() => {
-                hideBox.remove();
-                $botao.prop("disabled", false).html(textoOriginal);
-            })
-            .catch(err => {
-                console.error("Erro no PDF:", err);
-                hideBox.remove();
-                $botao.prop("disabled", false).html(textoOriginal);
-                alert("Houve um erro na geração. Tente novamente.");
-            });
+        // 4. CAPTURAR A FOTO (Sem windowWidth forçado, deixando a lib calcular)
+        setTimeout(() => {
+            const opt = {
+                margin:       [5, 5, 5, 5],
+                filename:     `Avaliacoes_${modalidade}.pdf`,
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { 
+                    scale: 2, 
+                    useCORS: true, 
+                    backgroundColor: "#ffffff",
+                    scrollY: 0,
+                    scrollX: 0
+                    // windowWidth removido para evitar cortes laterais em resoluções diferentes
+                },
+                jsPDF:        { 
+                    unit: 'mm', 
+                    format: 'a4', 
+                    orientation: 'portrait' 
+                },
+                // Configuração nativa poderosa para não cortar os cards na divisão da folha
+                pagebreak: { mode: ['css', 'legacy'], before: '.quebra-pagina-pdf' } 
+            };
+
+            html2pdf()
+                .set(opt)
+                .from(wrapper)
+                .save()
+                .then(() => {
+                    // Restaurar tudo ao normal
+                    wrapper.remove(); 
+                    elementosOcultos.forEach(item => {
+                        $(item.elemento).css("display", item.display);
+                    });
+                    window.scrollTo(0, 0);
+                    $botao.prop("disabled", false).html(textoOriginal);
+                })
+                .catch(err => {
+                    console.error("Erro no PDF:", err);
+                    wrapper.remove();
+                    elementosOcultos.forEach(item => $(item.elemento).css("display", item.display));
+                    $botao.prop("disabled", false).html(textoOriginal);
+                    alert("Ocorreu um erro ao gerar o PDF.");
+                });
+        }, 800);
 
     });
 
